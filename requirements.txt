@@ -1,0 +1,16 @@
+# General dependencies
+transformers==4.44.1
+datasets==2.21.0
+torch==2.4.0
+jupyterlab==4.2.4
+peft==0.12.0
+bitsandbytes==0.43.3
+trl==0.9.6
+ipywidgets==8.1.5
+python-dotenv==1.0.1
+loguru==0.7.2
+
+# Development dependencies
+# These are only needed for development and code quality checks.
+isort==5.13.2
+black==24.8.0
