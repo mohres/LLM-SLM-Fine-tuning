@@ -71,8 +71,8 @@ def generate_response(model, tokenizer, instruction, device="cpu"):
 def formatting_prompts_func(example):
     """Format prompts for training."""
     output_texts = []
-    for instruction, response in zip(example['instruction'], example['response']):
-        text = f"user\n{instruction}\nassistant\n{response}"
+    for i in range(len(example["instruction"])):
+        text = f"<|im_start|>user\n{example['instruction'][i]}<|im_end|>\n<|im_start|>assistant\n{example['response'][i]}<|im_end|>"
         output_texts.append(text)
     return output_texts
 
