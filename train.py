@@ -150,8 +150,8 @@ def main():
         peft_config=peft_config,
         args=sft_config,
     )
-    # trainer.train()
-    # trainer.save_model()
+    trainer.train()
+    trainer.save_model()
 
     # Load fine-tuned model and generate response
     ft_model = AutoModelForCausalLM.from_pretrained(output_dir).to(device)
