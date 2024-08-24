@@ -42,6 +42,7 @@ def load_environment_variables():
         "sft_bf16": os.getenv("SFT_BF16").lower() in ["true", "1", "t", "y", "yes"],
         "sft_warmup_ratio": float(os.getenv("SFT_WARMUP_RATIO")),
         "sft_lr_scheduler_type": os.getenv("SFT_LR_SCHEDULER_TYPE"),
+        "packing": os.getenv("PACKING").lower() in ["true", "1", "t", "y", "yes"],
     }
     return env_vars
 
@@ -80,13 +81,10 @@ def generate_response(model, tokenizer, instruction, device="cpu"):
     return response
 
 
-def formatting_prompts_func(example):
-    """Format prompts for training."""
-    output_texts = []
-    for i in range(len(example["instruction"])):
-        text = f"<|im_start|>user\n{example['instruction'][i]}<|im_end|>\n<|im_start|>assistant\n{example['response'][i]}<|im_end|>"
-        output_texts.append(text)
-    return output_texts
+def formatting_prompts_func(example: dict) -> str:
+    """Format prompt for training."""
+    text = f"<|im_start|>user\n{example['instruction']}<|im_end|>\n<|im_start|>assistant\n{example['response']}<|im_end|>"
+    return text
 
 
 def main():
@@ -152,6 +150,7 @@ def main():
         bf16=env_vars["sft_bf16"],
         warmup_ratio=env_vars["sft_warmup_ratio"],
         lr_scheduler_type=env_vars["sft_lr_scheduler_type"],
+        packing=env_vars["packing"],
     )
 
     # Initialize trainer and start training
@@ -161,7 +160,6 @@ def main():
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         formatting_func=formatting_prompts_func,
-        data_collator=collator,
         peft_config=peft_config,
         args=sft_config,
     )
