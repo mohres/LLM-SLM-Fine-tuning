@@ -167,7 +167,7 @@ def main():
     trainer.train()
     trainer.evaluate()
     trainer.save_model()
-    if token:= env_vars["hf_access_token"]:
+    if token := env_vars["hf_access_token"]:
         trainer.push_to_hub(token=token)
 
     # Load fine-tuned model and generate response
