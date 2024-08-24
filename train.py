@@ -43,6 +43,7 @@ def load_environment_variables():
         "sft_warmup_ratio": float(os.getenv("SFT_WARMUP_RATIO")),
         "sft_lr_scheduler_type": os.getenv("SFT_LR_SCHEDULER_TYPE"),
         "packing": os.getenv("PACKING").lower() in ["true", "1", "t", "y", "yes"],
+        "hf_access_token": os.getenv("HF_ACCESS_TOKEN"),
     }
     return env_vars
 
@@ -166,6 +167,8 @@ def main():
     trainer.train()
     trainer.evaluate()
     trainer.save_model()
+    if token:= env_vars["hf_access_token"]:
+        trainer.push_to_hub(token=token)
 
     # Load fine-tuned model and generate response
     ft_model = AutoModelForCausalLM.from_pretrained(output_dir).to(device)
