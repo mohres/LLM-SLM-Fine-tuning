@@ -16,5 +16,5 @@ def print_example(example):
 def print_response(response):
     """Print the model's response."""
     print(f"Model response:")
-    print(response)
+    print(response.split("assistant\n")[-1])
     print("-" * 100)
