@@ -164,6 +164,7 @@ def main():
         args=sft_config,
     )
     trainer.train()
+    trainer.evaluate()
     trainer.save_model()
 
     # Load fine-tuned model and generate response
