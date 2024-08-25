@@ -8,7 +8,7 @@ from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import DataCollatorForCompletionOnlyLM, SFTConfig, SFTTrainer
 
-from utils import format_dataset, print_example, print_response
+from utils import format_dataset, generate_response, print_example, print_response
 
 
 def load_environment_variables():
@@ -66,20 +66,6 @@ def prepare_datasets(dataset, instruction_col_name, response_col_name):
         train_dataset, eval_dataset = split_dataset["train"], split_dataset["test"]
 
     return train_dataset, eval_dataset
-
-
-def generate_response(model, tokenizer, instruction, device="cpu"):
-    """Generate a response from the model based on an instruction."""
-    messages = [{"role": "user", "content": instruction}]
-    input_text = tokenizer.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
-    inputs = tokenizer.encode(input_text, return_tensors="pt").to(device)
-    outputs = model.generate(
-        inputs, max_new_tokens=128, temperature=0.2, top_p=0.9, do_sample=True
-    )
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return response
 
 
 def formatting_prompts_func(example: dict) -> str:
