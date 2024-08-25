@@ -6,6 +6,8 @@ In this project, the goal was to fine-tune the SmolLM-135M-Instruct model to equ
 
 To achieve this, I utilized the medalpaca/medical_meadow_medical_flashcards dataset, which is based on the Anki Medical Curriculum flashcards. These flashcards, created and continuously updated by medical students, cover a comprehensive range of topics, including anatomy, physiology, pathology, pharmacology, and more. They are designed to aid in the effective learning and retention of critical medical concepts through concise summaries and mnemonics.
 
+The fine-tuned model is available on [HuggingFace 🤗](https://huggingface.co/mohres/SmolLM-135M-Instruct-medical_meadow_medical_flashcards-10epochs)
+
 ## Model Performance Comparison
 
 While the base model's responses are general and follow a markdown format, the fine-tuned model appears to have effectively incorporated the specialized skills it was trained on, particularly in replicating the expected response style. However, as someone without a medical background, I am unable to assess the accuracy or quality of the responses provided by either model. Below is a table comparing the responses of the original model, base model, and fine-tuned model for a set of medical questions.
