@@ -108,10 +108,6 @@ def main():
     print_example(example1)
     print_response(response)
 
-    # Data collator for training
-    response_template = "assistant\n"
-    collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=tokenizer)
-
     # PEFT configuration
     peft_config = LoraConfig(
         r=env_vars["peft_r"],
