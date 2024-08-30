@@ -76,7 +76,7 @@ def main():
         model_cfg.id,
         torch_dtype=torch.bfloat16,
         low_cpu_mem_usage=True,
-    )
+    ).to(device)
 
     # Generate a response for the first example in the validation dataset
     example1 = eval_dataset[0]
