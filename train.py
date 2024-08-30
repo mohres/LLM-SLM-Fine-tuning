@@ -68,12 +68,25 @@ def main():
     logger.info(f"Evaluation Dataset: {len(eval_dataset)} examples")
 
     # Setup device
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    use_cuda = torch.cuda.is_available()
+    device = "cuda" if use_cuda else "cpu"
+
+    quantization_config = None
+    if use_cuda and model_cfg.quantization:
+        if model_cfg.quantization == 4:
+            quantization_config = BitsAndBytesConfig(load_in_4bit=True)
+        elif model_cfg.quantization == 8:
+            quantization_config = BitsAndBytesConfig(load_in_8bit=True)
+        else:
+            raise ValueError(
+                f"Use 4-bit or 8-bit quantization. You passed: {model_cfg.quantization}/"
+            )
 
     # Load model and tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_cfg.id, use_fast=model_cfg.use_fast_tokenizer)
     model = AutoModelForCausalLM.from_pretrained(
         model_cfg.id,
+        quantization_config=quantization_config,
         torch_dtype=torch.bfloat16,
         low_cpu_mem_usage=True,
     ).to(device)
