@@ -1,3 +1,6 @@
+from hydra import compose, initialize
+
+
 def format_dataset(dataset, keys, instruction_col_name, response_col_name):
     """Format the dataset by retaining only necessary columns and renaming them."""
     cols_to_remove = [key for key in keys if key not in [instruction_col_name, response_col_name]]
@@ -31,3 +34,9 @@ def generate_response(model, tokenizer, instruction, device="cpu"):
     )
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return response
+
+def get_config(config_name: str):
+    with initialize(config_path="./configs", version_base="1.1"):
+        cfg = compose(config_name=config_name)
+
+    return cfg
