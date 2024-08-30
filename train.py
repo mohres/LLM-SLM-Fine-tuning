@@ -46,7 +46,7 @@ def main():
     model_cfg = cfg.model
     dataset_cfg = cfg.dataset
     train_cfg = cfg.training_arguments
-    
+
     # Setup logging
     output_dir = (
         train_cfg.output_dir
@@ -83,7 +83,9 @@ def main():
             )
 
     # Load model and tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_cfg.id, use_fast=model_cfg.use_fast_tokenizer)
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_cfg.id, use_fast=model_cfg.use_fast_tokenizer
+    )
     model = AutoModelForCausalLM.from_pretrained(
         model_cfg.id,
         quantization_config=quantization_config,
