@@ -8,6 +8,7 @@ dataset:
 
 model:
   id: "HuggingFaceTB/SmolLM-135M-Instruct"
+  quantization: 4 # 8 or 4 if you want to do quantization with BitsAndBytes, 0 to ignore
   gradient_checkpointing: True
   use_fast_tokenizer: True
   lora:
