@@ -89,7 +89,9 @@ def main():
         quantization_config=quantization_config,
         torch_dtype=torch.bfloat16,
         low_cpu_mem_usage=True,
-    ).to(device)
+    )
+    if quantization_config is None:
+        model.to(device)
 
     # Generate a response for the first example in the validation dataset
     example1 = eval_dataset[0]
