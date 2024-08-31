@@ -1,0 +1,41 @@
+# LLM Instruction Tuning on General Dataset
+---
+
+dataset:
+  id: "medalpaca/medical_meadow_medical_flashcards"
+  instruction_column_name: "input"
+  response_column_name: "output"
+
+model:
+  id: "mistralai/Mistral-7B-Instruct-v0.2"
+  quantization: 4 # 8 or 4 if you want to do quantization with BitsAndBytes
+  gradient_checkpointing: True
+  use_fast_tokenizer: True
+  lora:
+    peft_r: 16
+    peft_alpha: 32
+    peft_dropout: 0.05
+    peft_bias: "none"
+    target_modules: null
+
+training_arguments:
+  epochs: 1
+  output_dir: null # if null, will be named automatically using the base model, dataset, and epoch num
+  max_seq_length: 512
+  per_device_train_batch_size: 8
+  gradient_accumulation_steps: 2
+  optim: "paged_adamw_32bit"
+  save_steps: 100
+  logging_steps: 100
+  learning_rate: 0.001
+  weight_decay: 0.001
+  fp16: false
+  bf16: true
+  warmup_ratio: 0.05
+  packing: true
+  gradient_checkpointing: ${model.gradient_checkpointing}
+  lr_scheduler_type: "constant"
+
+hugging_face:
+  push_to_hub: false
+  token: null
