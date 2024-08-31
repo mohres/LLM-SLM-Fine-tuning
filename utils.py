@@ -73,6 +73,20 @@ def parse_arguments():
     return parser.parse_args()
 
 
+def setup_output_directory(train_cfg, model_cfg, dataset_cfg):
+    """Determine the directory where fine-tuned models and logs are saved.
+
+    Returns:
+        str: The path to the output directory.
+    """
+    if train_cfg.output_dir:
+        return train_cfg.output_dir
+
+    if model_cfg.quantization:
+        return f"{model_cfg.id.split('/')[-1]}-{dataset_cfg.id.split('/')[-1]}-Instruct-{model_cfg.quantization}Q"
+    return f"{model_cfg.id.split('/')[-1]}-{dataset_cfg.id.split('/')[-1]}-Instruct"
+
+
 def load_tokenizer(model_cfg):
     """Load and configure the tokenizer."""
     tokenizer = AutoTokenizer.from_pretrained(

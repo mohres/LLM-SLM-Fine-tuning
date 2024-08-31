@@ -15,12 +15,8 @@ def main():
     dataset_cfg = cfg.dataset
     train_cfg = cfg.training_arguments
 
-    # Setup logging
-    output_dir = (
-        train_cfg.output_dir
-        if train_cfg.output_dir
-        else f"{model_cfg.id.split('/')[-1]}-{dataset_cfg.id.split('/')[-1]}-{train_cfg.epochs}epochs"
-    )
+    output_dir = setup_output_directory(train_cfg, model_cfg, dataset_cfg)
+
     logger.info(f"Model ID: {model_cfg.id}")
     logger.info(f"Dataset ID: {dataset_cfg.id}")
     logger.info(f"Output Directory: {output_dir}")
