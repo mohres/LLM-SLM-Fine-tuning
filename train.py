@@ -67,6 +67,12 @@ def main():
     logger.info(f"Training Dataset: {len(train_dataset)} examples")
     logger.info(f"Evaluation Dataset: {len(eval_dataset)} examples")
 
+    # Load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_cfg.id, use_fast=model_cfg.use_fast_tokenizer
+    )
+    tokenizer.pad_token = tokenizer.eos_token
+
     # Setup device
     use_cuda = torch.cuda.is_available()
     device = "cuda" if use_cuda else "cpu"
@@ -82,10 +88,7 @@ def main():
                 f"Use 4-bit or 8-bit quantization. You passed: {model_cfg.quantization}/"
             )
 
-    # Load model and tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_cfg.id, use_fast=model_cfg.use_fast_tokenizer
-    )
+    # Load model
     model = AutoModelForCausalLM.from_pretrained(
         model_cfg.id,
         quantization_config=quantization_config,
