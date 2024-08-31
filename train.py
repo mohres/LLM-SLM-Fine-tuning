@@ -34,9 +34,13 @@ def prepare_datasets(dataset, instruction_col_name, response_col_name):
     return train_dataset, eval_dataset
 
 
-def formatting_prompts_func(example: dict) -> str:
+def formatting_prompts_func(example: dict, tokenizer) -> str:
     """Format prompt for training."""
-    text = f"<|im_start|>user\n{example['instruction']}<|im_end|>\n<|im_start|>assistant\n{example['response']}<|im_end|>"
+    chat = [
+        {"role": "user", "content": example['instruction']},
+        {"role": "assistant", "content": example['response']},
+    ]
+    text = tokenizer.apply_chat_template(chat, tokenize=False)
     return text
 
 
@@ -135,12 +139,13 @@ def main():
     )
 
     # Initialize trainer and start training
+    formatting_func = lambda example: formatting_prompts_func(example, tokenizer)
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        formatting_func=formatting_prompts_func,
+        formatting_func=formatting_func,
         peft_config=peft_config,
         args=sft_config,
     )
