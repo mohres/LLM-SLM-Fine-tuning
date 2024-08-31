@@ -1,14 +1,18 @@
 # Project Overview
 
-**Why do we fine-tune a Language Model (LLM)?** Fine-tuning is essential when we need **to teach an LLM a new skill** or **enhance its understanding in a specific domain**. 
+**Why do we fine-tune a Language Model?** Fine-tuning is essential when we need **to teach an LLM a new skill** or **enhance its understanding in a specific domain**. 
 
-In this project, the goal was to fine-tune the SmolLM-135M-Instruct model to equip it with more reliable and accurate medical knowledge. Medicine is a vast and complex field that requires a deep understanding of numerous subjects, from basic medical sciences to advanced clinical skills.
+In this project, we aim to fine-tune both small and large instruct/chat language models, including SmolLM for small language models (SLM) and Mistral for large language models (LLM).
 
-To achieve this, I utilized the medalpaca/medical_meadow_medical_flashcards dataset, which is based on the Anki Medical Curriculum flashcards. These flashcards, created and continuously updated by medical students, cover a comprehensive range of topics, including anatomy, physiology, pathology, pharmacology, and more. They are designed to aid in the effective learning and retention of critical medical concepts through concise summaries and mnemonics.
+The primary example dataset used is `medalpaca/medical_meadow_medical_flashcards`, derived from the Anki Medical Curriculum flashcards. These flashcards, created and regularly updated by medical students, cover a broad spectrum of medical topics—such as anatomy, physiology, pathology, and pharmacology—and are designed to support effective learning and retention through concise summaries and mnemonics.
 
-The fine-tuned model is available on [HuggingFace 🤗](https://huggingface.co/mohres/SmolLM-135M-Instruct-medical_meadow_medical_flashcards-10epochs)
+Although this project uses the medical_meadow_medical_flashcards dataset, it is adaptable to other datasets for question/answering and instruct/response tasks. Integration of different datasets can be easily accomplished by modifying the configuration files.
 
-## Model Performance Comparison
+The project also supports quantization, making it feasible to fine-tune large models like Mistral and Llama on more modest hardware setups.
+
+The fine-tuned SmolLM model is available on [HuggingFace 🤗](https://huggingface.co/mohres/SmolLM-135M-Instruct-medical_meadow_medical_flashcards-10epochs)
+
+## Model Performance Comparison (SmolLM-135M-Instruct)
 
 While the base model's responses are general and follow a markdown format, the fine-tuned model appears to have effectively incorporated the specialized skills it was trained on, particularly in replicating the expected response style. However, as someone without a medical background, I am unable to assess the accuracy or quality of the responses provided by either model. Below is a table comparing the responses of the original model, base model, and fine-tuned model for a set of medical questions.
 
@@ -62,8 +66,15 @@ You can explore the training steps using Jupyter notebooks:
     jupyter-lab
     ```
 
-Alternatively, you can start the fine-tuning process directly. The parameters used for fine-tuning are specified in the .env file, and explanations for these parameters can be found in comments within the same file. 
-To begin the fine-tuning process, run:
+Alternatively, you can start the fine-tuning process directly. The parameters used for fine-tuning are specified in the configuration files inside `configs` folder. 
+To begin the fine-tuning process with the default SmalLM model, run:
 ```
 python train.py
 ```
+
+If you want to train a different model, you can specify the model configuration by passing the config file name as an argument:
+```
+python train.py --model Mistral
+```
+
+Replace Mistral with the name of the desired model's config file. To train a new model, simply create a new config file with the desired settings and run train.py with the appropriate model name.
